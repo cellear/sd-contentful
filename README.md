@@ -35,5 +35,5 @@ See the planning documents in `docs/001-contentful-migration/` or `.worktrees/00
 
 ## License
 
-[Add your license here]
+MIT License - See LICENSE file for details
 
