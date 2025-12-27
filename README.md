@@ -1,6 +1,6 @@
 # Simplify Drupal → Contentful Migration
 
-**SD-CONTENTFUL** - Modernizing Simplify Drupal by migrating from Drupal+React to Contentful+Next.js with a decoupled architecture.
+**SD-CONTENTFUL** - Modernizing Simplify Drupal by migrating from Drupal+React to Contentful+Next.js with a decoupled architecture, in order to explore and prototype non-Drupal architectures.
 
 ## Project Status
 
