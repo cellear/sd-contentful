@@ -1,0 +1,37 @@
+# Added by Spec Kitty CLI (auto-managed)
+.claude/
+.codex/
+.opencode/
+.windsurf/
+.gemini/
+.cursor/
+.qwen/
+.kilocode/
+.augment/
+.roo/
+.amazonq/
+.github/copilot/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.env
+*.key
+*.pem
+secrets/
+
+# Legacy code (reference only, not for public repo)
+legacy-reference/
+
+# Spec Kitty dashboard data
+.kittify/.dashboard/
+
+# OS files
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Node modules (if any get added)
+node_modules/

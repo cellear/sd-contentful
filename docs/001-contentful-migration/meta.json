@@ -1,0 +1,7 @@
+{
+  "feature_number": "001",
+  "slug": "001-contentful-migration",
+  "friendly_name": "Contentful Migration",
+  "source_description": "Migrate SimplifyDrupal from Drupal+React to Contentful+Next.js with decoupled architecture",
+  "created_at": "2025-12-27T18:52:20Z"
+}
