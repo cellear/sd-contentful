@@ -6,8 +6,7 @@
 
 ✅ **MVP Complete** - The migration is functionally complete and deployed! All 31 tips are accessible with images, styling, and full functionality.
 
-**Live Demo**: https://sd-contentful-hn57efx68-cellears-projects.vercel.app/  
-*(Custom domain coming soon: `contentful.simplifydrupal.com`)*
+**Live Demo**: https://sd-contentful.vercel.app/
 
 This project uses [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) for spec-driven development.
 
@@ -51,12 +50,9 @@ This project uses [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) for sp
 
 The app is deployed to Vercel and automatically updates on push to the main branch. See `.worktrees/004-description-deploy-next/kitty-specs/004-description-deploy-next/quickstart.md` for deployment details.
 
-**Custom Domain Setup** (optional):
-- Vercel's free tier supports custom domains
-- To add `contentful.simplifydrupal.com`:
-  1. Go to Vercel project → Settings → Domains
-  2. Add `contentful.simplifydrupal.com`
-  3. Follow DNS configuration instructions (add CNAME record)
+**Custom Domain** (optional):
+- Vercel's free tier supports custom domains if you want to use `contentful.simplifydrupal.com` instead
+- Current domain `sd-contentful.vercel.app` is already clean and readable
 
 ### Planning Documents
 
