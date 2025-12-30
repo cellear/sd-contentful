@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Footer from "@/components/Footer";
+import HeaderNotice from "@/components/HeaderNotice";
 
 export const metadata: Metadata = {
   title: "Simplify Drupal",
@@ -14,8 +14,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <HeaderNotice />
         {children}
-        <Footer />
       </body>
     </html>
   );
