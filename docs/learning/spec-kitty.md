@@ -151,6 +151,14 @@ Spec Kitty is a spec-driven development workflow tool that helps coordinate mult
 
 **Workaround**: Manually edit the `lane:` field in the work package prompt file frontmatter (same as lane update issue above).
 
+### WP03: Work Package Completion (2025-12-29)
+
+**What I learned:**
+- After completing a work package, update both the frontmatter `lane:` field AND the `## Activity Log` section
+- The dashboard monitors file changes, so updates appear automatically
+- Remember to update `tasks.md` to mark subtasks as complete (checkboxes)
+- Work package completion involves: code implementation, tests, documentation updates, and status tracking
+
 ## Questions / Unresolved
 
 - [Add questions as they come up]

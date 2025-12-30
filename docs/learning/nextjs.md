@@ -142,12 +142,54 @@ Running `npm run dev` starts a development server (like `php -S localhost:8000` 
 
 **Key insight**: Server components make data fetching simple - just call the async function and use the result. No state management, no loading states (unless you want them), no client-side fetching complexity.
 
+### WP03: User Story 1 - View Tips List (2025-12-29)
+
+**What I learned:**
+
+#### Server vs Client Components
+
+**Critical distinction**: Components are Server Components by default in Next.js App Router. To use interactivity (event handlers, hooks, browser APIs), you must add `"use client"` directive at the top of the file.
+
+**The error we hit**: 
+```
+Error: Event handlers cannot be passed to Client Component props.
+```
+
+**The fix**: Added `"use client"` to `TipList.tsx` because it uses `onMouseEnter` and `onMouseLeave` for hover effects.
+
+**Rule of thumb**: 
+- Server Components: Data fetching, no interactivity, smaller bundle
+- Client Components: Interactivity, hooks, browser APIs, larger bundle (JavaScript sent to client)
+
+**Best practice**: Keep most components as Server Components, only mark Client Components when you need interactivity.
+
+#### Component Composition Pattern
+
+- Server Component (home page) fetches data
+- Server Component passes data to Client Component (TipList)
+- Client Component handles interactivity (hover effects, links)
+- This is the recommended Next.js pattern: fetch in Server, interact in Client
+
+#### Next.js Link Component
+
+- `Link` from `next/link` provides client-side navigation (faster than full page reloads)
+- Works in both Server and Client Components
+- Use `href` prop for the route (e.g., `href={`/${tip.slug}`}`)
+- Automatically prefetches linked pages for better performance
+
+#### Integration Testing
+
+- Can test Server Components by awaiting them (they're async functions)
+- Mock adapter functions to avoid real API calls
+- Use React Testing Library to verify rendered output
+- Test user interactions (clicking links) even in integration tests
+
 ### Implementation Steps
 
 - [x] Initialize Next.js project with App Router (WP01)
 - [x] Set up TypeScript with strict mode (WP01)
 - [x] Create adapter layer for Contentful (WP02)
-- [ ] Build home page (list view) (WP03)
+- [x] Build home page (list view) (WP03)
 - [ ] Build detail page (dynamic route) (WP04)
 - [ ] Handle 404s for missing content (WP04)
 - [ ] Render rich text content (WP04)

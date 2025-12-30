@@ -132,6 +132,33 @@ Our adapter transforms this to our `Tip` interface:
 - Mock Contentful entries must match the real structure (`sys` + `fields`)
 - Tests verify transformation, ordering, filtering, error handling
 
+### WP03: End-to-End Integration (2025-12-29)
+
+**What I learned using the adapter in the UI:**
+
+#### Adapter Usage Pattern
+
+- Adapter functions are called directly in Server Components (no special setup needed)
+- `getAllTips()` returns a Promise, so use `await` in async components
+- The adapter abstracts away all Contentful-specific details - the UI just calls `getAllTips()` and gets `Tip[]`
+- This confirms the adapter pattern is working: UI doesn't know or care that data comes from Contentful
+
+#### Content Flow
+
+1. **Contentful** → Published entries in Contentful space
+2. **Adapter** (`getAllTips()`) → Fetches, transforms, orders entries
+3. **Server Component** (home page) → Calls adapter, receives `Tip[]`
+4. **UI Component** (TipList) → Receives tips as props, renders them
+
+**Key insight**: The adapter successfully isolates the CMS implementation. The UI components have no knowledge of Contentful - they just work with `Tip` objects.
+
+#### Real-World Usage
+
+- Adapter handles all the complexity (API calls, transformation, error handling)
+- UI components stay simple and focused on presentation
+- If we ever swap Contentful for another CMS, only the adapter layer changes
+- This validates the decoupled architecture principle from the constitution
+
 ### API Integration
 
 **What I learned:**
@@ -139,6 +166,7 @@ Our adapter transforms this to our `Tip` interface:
 - ✅ How to query entries by content type
 - ✅ How to transform Contentful entries to our Tip interface
 - ✅ How to handle errors (API unavailable, rate limits)
+- ✅ How to use the adapter in real UI components (WP03)
 
 ### Rich Text Rendering
 
