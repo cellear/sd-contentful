@@ -281,15 +281,59 @@ Error: Event handlers cannot be passed to Client Component props.
 
 **Key Insight**: Understanding the original app structure (from HTML source) was crucial for implementing the correct layout. CSS Modules make it easy to scope styles per component, preventing conflicts with Next.js defaults. For square thumbnails, combine Contentful image transformations with fixed-height CSS containers.
 
+### WP06: Vercel Deployment (2025-12-30)
+
+**What I learned deploying to Vercel:**
+
+#### Framework Detection
+- **Vercel auto-detection**: Vercel should auto-detect Next.js, but sometimes you need to manually set **Framework Preset** to "Next.js" in project settings
+- **Output Directory**: Must be **empty** for Next.js (not "public" or any other value)
+- **Build Command**: Auto-detects as `next build` (verify this is set)
+- **Root Directory**: Empty when app is at repo root (no worktree path needed)
+
+#### Build-Time vs Runtime Environment Variables
+- **Problem**: Next.js tries to analyze code during build, which can fail if Contentful client initializes without env vars
+- **Solution**: Lazy initialization using Proxy pattern - client is only created when actually used
+- **Result**: Build succeeds without env vars, runtime throws clear errors if vars are missing
+
+#### Lazy Client Initialization
+```typescript
+// Client is created on-demand, not at module load time
+let _contentfulClient: ContentfulClientApi<any> | null = null;
+
+function getContentfulClient(): ContentfulClientApi<any> {
+  if (_contentfulClient) return _contentfulClient;
+  // Create client only when needed (at runtime, not build time)
+  _contentfulClient = createClient({ space, accessToken });
+  return _contentfulClient;
+}
+
+export const contentfulClient = new Proxy({} as ContentfulClientApi<any>, {
+  get(_target, prop) {
+    const client = getContentfulClient();
+    const value = (client as any)[prop];
+    return typeof value === 'function' ? value.bind(client) : value;
+  },
+});
+```
+
+#### Project Structure for Deployment
+- **Canonical location**: Next.js app should be at repo root for standard deployment
+- **Worktrees**: Spec Kitty worktrees are for development, but production code lives at root
+- **Build artifacts**: `.next/`, `out/`, `*.tsbuildinfo` should be in `.gitignore`
+
+**Key Insight**: Vercel deployment requires proper framework detection. Lazy initialization allows builds to succeed without runtime env vars, which are provided by Vercel at deployment time.
+
 ### Implementation Steps
 
 - [x] Initialize Next.js project with App Router (WP01)
 - [x] Set up TypeScript with strict mode (WP01)
 - [x] Create adapter layer for Contentful (WP02)
 - [x] Build home page (list view) (WP03)
-- [ ] Build detail page (dynamic route) (WP04)
-- [ ] Handle 404s for missing content (WP04)
-- [ ] Render rich text content (WP04)
+- [x] Build detail page (dynamic route) (WP04)
+- [x] Handle 404s for missing content (WP04)
+- [x] Render rich text content (WP04)
+- [x] Deploy to Vercel (WP06)
 
 ## Questions / Unresolved
 
