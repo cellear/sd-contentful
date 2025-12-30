@@ -12,6 +12,17 @@ Contentful is a headless CMS (Content Management System) that provides:
 
 ## My Learning Journey
 
+**Work Packages**: WP01 (Project Setup - no Contentful work yet), WP02 (Adapter Layer - coming soon)
+
+### WP01: Project Setup (2025-12-29)
+
+**Status**: No Contentful-specific work in WP01. This work package focused on Next.js project initialization, TypeScript setup, and project structure. Contentful integration begins in WP02.
+
+**What was prepared:**
+- Environment variable template (`.env.local.example`) created with placeholders for `CONTENTFUL_SPACE_ID` and `CONTENTFUL_ACCESS_TOKEN`
+- TypeScript types defined (`lib/types/tip.ts`) matching our planned Contentful content model
+- Project structure ready for Contentful SDK integration in WP02
+
 ### Initial Research (2025-12-27)
 
 **What I learned from planning:**
@@ -40,13 +51,94 @@ Contentful is a headless CMS (Content Management System) that provides:
 - Rich text allows formatting (headings, lists, links) via WYSIWYG editor
 - Slugs must be unique (Contentful enforces this)
 
+### WP02: Content Adapter Layer (2025-12-29)
+
+**What I learned implementing the adapter:**
+
+#### Contentful SDK Setup
+
+- Install: `npm install contentful`
+- Create client: `createClient({ space, accessToken })`
+- Client reads from environment variables (`.env.local`)
+- Client is created once and exported as singleton
+
+#### API Token Types (Important!)
+
+**Content Delivery API token** - Used for reading published content (what we need)
+- This is what Next.js apps use to fetch content
+- Only works with published entries
+- Found in Settings → API keys → "Content Delivery API - access token"
+
+**Management API token** - Used for creating/editing content via API
+- Not what we need for a read-only Next.js app
+- Would cause 401 "Access token invalid" errors
+
+**Gotcha**: When copying tokens, make sure you're copying the **Content Delivery API** token, not the Management API token!
+
+#### Querying Content
+
+```typescript
+// Get all entries of a content type
+const response = await client.getEntries({
+  content_type: "tip",  // Must match Contentful content type ID exactly
+});
+
+// Get single entry by field
+const response = await client.getEntries({
+  content_type: "tip",
+  "fields.slug": "my-slug",  // Query syntax: "fields.fieldName"
+  limit: 1,
+});
+```
+
+**Key points:**
+- Content type ID must match exactly (case-sensitive, lowercase `tip`)
+- Query fields use `"fields.fieldName"` syntax
+- Response has `items` array of entries
+- Each entry has `sys` (metadata) and `fields` (actual content)
+
+#### Transforming Contentful Entries
+
+Contentful entries have this structure:
+```typescript
+{
+  sys: { id, type, createdAt, updatedAt, ... },
+  fields: {
+    title: "My Title",
+    slug: "my-slug",
+    tipNumber: 1,
+    body: Document  // Rich Text Document
+  }
+}
+```
+
+Our adapter transforms this to our `Tip` interface:
+- Maps `fields.title` → `title`
+- Maps `fields.slug` → `slug`
+- Maps `fields.tipNumber` → `tipNumber`
+- Maps `fields.body` → `body` (already a Document type)
+
+**Validation**: We filter out entries with missing required fields (silently, per contract)
+
+#### Error Handling
+
+- Contentful SDK throws errors for API failures (401, network errors, etc.)
+- We catch and throw simple "Contentful is down!" message (per constitution)
+- No retry logic, no caching - keep it simple
+
+#### Testing
+
+- Unit tests use mocks (no real API calls needed)
+- Mock Contentful entries must match the real structure (`sys` + `fields`)
+- Tests verify transformation, ordering, filtering, error handling
+
 ### API Integration
 
-**What I'll learn during implementation:**
-- How to use Contentful SDK (`contentful` npm package)
-- How to query entries by content type
-- How to transform Contentful entries to our Tip interface
-- How to handle errors (API unavailable, rate limits)
+**What I learned:**
+- ✅ How to use Contentful SDK (`contentful` npm package)
+- ✅ How to query entries by content type
+- ✅ How to transform Contentful entries to our Tip interface
+- ✅ How to handle errors (API unavailable, rate limits)
 
 ### Rich Text Rendering
 
@@ -56,13 +148,13 @@ Contentful is a headless CMS (Content Management System) that provides:
 - How to customize rendering (if needed)
 - How formatting is preserved
 
-## Setup Steps (To Do)
+## Setup Steps
 
-- [ ] Create Contentful account
-- [ ] Create a Space
-- [ ] Create Tip content type with required fields
-- [ ] Get API credentials (Space ID, Access Token)
-- [ ] Test API access
+- [x] Create Contentful account (WP02)
+- [x] Create a Space (WP02 - "SD-CONTENTFUL")
+- [x] Create Tip content type with required fields (WP02)
+- [x] Get API credentials (Space ID, Access Token) (WP02)
+- [x] Test API access (WP02 - adapter working!)
 
 ## Migration Steps (To Do)
 
