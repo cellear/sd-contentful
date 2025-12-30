@@ -159,6 +159,28 @@ Spec Kitty is a spec-driven development workflow tool that helps coordinate mult
 - Remember to update `tasks.md` to mark subtasks as complete (checkboxes)
 - Work package completion involves: code implementation, tests, documentation updates, and status tracking
 
+### WP05: Styling Feature Creation (2025-12-30)
+
+**What I learned creating the styling feature:**
+
+#### Feature Creation Workflow
+- `/spec-kitty.specify` - Creates feature specification (creates new worktree)
+- `/spec-kitty.plan` - Creates implementation plan (must run before tasks)
+- `/spec-kitty.tasks` - Creates work packages that appear on Kanban board
+- **Order matters**: specify → plan → tasks (can't skip plan step)
+
+#### Kanban Board Feature Selection
+- **Dashboard defaults to feature 001**: Need to use feature dropdown to switch to other features
+- **Feature selector**: Located in header, shows current feature name
+- **Work packages appear**: Once tasks are generated, they show up in the selected feature's Kanban board
+
+#### Work Package Lane Updates
+- **Manual editing required**: Update `lane:` field in frontmatter to move work packages
+- **Dashboard auto-refreshes**: Changes appear immediately after file updates
+- **History tracking**: Add entries to `history:` array when changing lanes
+
+**Key Insight**: The Spec Kitty workflow is sequential (specify → plan → tasks), and the dashboard requires feature selection to view different features' work packages.
+
 ## Questions / Unresolved
 
 - [Add questions as they come up]

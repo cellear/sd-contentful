@@ -353,6 +353,29 @@ When updating published entries:
 
 **Key Insight**: Contentful's API is powerful but requires careful version management. The Management API is essential for bulk operations that aren't available in the web UI.
 
+### WP06: Image Transformations & Thumbnails (2025-12-30)
+
+**What I learned about Contentful image transformations:**
+
+#### On-the-Fly Image Transformations
+- **Contentful supports image transformations via URL parameters** - no need to store separate thumbnail files
+- Similar to Drupal's image styles, but done via URL parameters instead of pre-generated files
+- Example: `https://images.ctfassets.net/.../image.jpg?w=250&fit=fill` generates a 250px thumbnail on-the-fly
+
+#### Transformation Parameters
+- `?w=250` - Resize to 250px width (maintains aspect ratio)
+- `?fit=fill` - Fill the dimensions (may crop to fit)
+- `?h=250` - Resize to 250px height
+- Multiple parameters: `?w=250&fit=fill&q=80` (width, fit mode, quality)
+
+#### Benefits
+- **No storage overhead**: Don't need to upload separate thumbnail versions
+- **Flexible**: Can generate any size on-demand
+- **CDN cached**: Transformed images are cached by Contentful's CDN
+- **Automatic**: Works with any image asset in Contentful
+
+**Key Insight**: Contentful's image transformation API eliminates the need for separate thumbnail storage (unlike Drupal's image styles which generate files). This simplifies content management while providing flexibility.
+
 ## Questions / Unresolved
 
 - What's the rate limit on free tier? (We didn't hit it with 31 tips + images)

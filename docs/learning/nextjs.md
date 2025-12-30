@@ -237,6 +237,44 @@ Error: Event handlers cannot be passed to Client Component props.
 - Use React Testing Library to verify rendered output
 - Test user interactions (clicking links) even in integration tests
 
+### WP05: CSS Modules & Grid Layout (2025-12-30)
+
+**What I learned implementing the grid layout:**
+
+#### CSS Modules in Next.js
+- **Automatic scoping**: Next.js automatically scopes CSS Module class names to prevent conflicts
+- **Import syntax**: `import styles from './Component.module.css'`
+- **Usage**: `className={styles.className}` - class names are transformed to unique identifiers
+- **No global conflicts**: CSS Modules prevent style leakage between components
+
+#### Grid Layout Implementation
+- **CSS Grid**: Used `display: grid` with `grid-template-columns: repeat(auto-fill, minmax(250px, 1fr))` for responsive grid
+- **Auto-fill**: Automatically creates as many columns as fit in the container
+- **Minmax**: Each column is at least 250px wide, can grow to fill available space
+- **Gap**: `gap: 1.5rem` provides consistent spacing between grid items
+
+#### Legacy App Structure Discovery
+- **Original structure**: Grid of cards, not a simple list
+- **Card components**: Each tip is a card with image, number, title, and "read more" link
+- **Image thumbnails**: Cards display thumbnail images (250px width)
+- **Hover effects**: Cards have transform and shadow effects on hover
+
+#### Component Structure
+```tsx
+<div className={styles.tipsGrid}>
+  {tips.map(tip => (
+    <Link className={styles.tipCard}>
+      <img className={styles.tipThumb} />
+      <h3>Tip {tip.tipNumber}</h3>
+      <p>{tip.title}</p>
+      <span className={styles.readMore}>Click to read more...</span>
+    </Link>
+  ))}
+</div>
+```
+
+**Key Insight**: Understanding the original app structure (from HTML source) was crucial for implementing the correct layout. CSS Modules make it easy to scope styles per component, preventing conflicts with Next.js defaults.
+
 ### Implementation Steps
 
 - [x] Initialize Next.js project with App Router (WP01)
