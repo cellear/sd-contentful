@@ -270,6 +270,16 @@ const response = await client.getEntries({
 - We had to write our own import script using the Management API
 - This is a common need, but Contentful expects you to use their API or third-party tools
 
+#### Alternative: Contentful CLI JSON Import (Better Approach)
+- **Discovery**: Contentful CLI (`contentful-cli`) supports native JSON import via `contentful space import`
+- **JSON Format**: Contentful expects a specific JSON structure with `contentTypes`, `entries`, `assets`, `locales`, etc.
+- **Better Approach**: If Drupal can export to JSON (or a format close to Contentful's), we could:
+  1. Export from Drupal to JSON
+  2. Transform JSON to Contentful's format (simpler than CSV transformation)
+  3. Use `contentful space import` CLI command (no custom script needed)
+- **Why We Didn't Use It**: We started with CSV export from Drupal, then built a custom import script. In hindsight, JSON export + CLI import would have been simpler.
+- **Reference**: [Contentful CLI Import Documentation](https://www.contentful.com/developers/docs/tutorials/cli/import-and-export/#import-content)
+
 #### Management API vs Delivery API
 - **Management API token** (`CFPAT-...`) - Used for creating/editing content via API
 - **Delivery API token** - Used for reading published content (what Next.js uses)
@@ -352,6 +362,12 @@ When updating published entries:
 - Rate limiting: Added 500ms delay between operations to avoid API limits
 
 **Key Insight**: Contentful's API is powerful but requires careful version management. The Management API is essential for bulk operations that aren't available in the web UI.
+
+**Alternative Approach (What We'd Do Differently)**: 
+- Use Contentful CLI's native JSON import (`contentful space import`) instead of custom Management API script
+- Export from Drupal to JSON format (if possible)
+- Transform Drupal JSON to Contentful's JSON structure
+- This would eliminate the need for a custom import script and leverage Contentful's built-in import tooling
 
 ### WP06: Image Transformations & Thumbnails (2025-12-30)
 
