@@ -28,6 +28,27 @@ mkdir: : No such file or directory
 
 ---
 
+### 2. `tasks_cli.py` Doesn't Work from Worktree Directories
+
+**Summary**: The `tasks_cli.py` script fails to find feature directories when run from worktree directories because it looks in the main repo structure instead of the worktree.
+
+**Error**:
+```
+Feature '001-contentful-migration' has no tasks directory at /Users/.../SD-CONTENTFUL/kitty-specs/001-contentful-migration/tasks
+```
+
+**Root Cause**: Script looks for features in main repo (`kitty-specs/`), but with worktrees, features are in `.worktrees/{feature}/kitty-specs/`.
+
+**Impact**: Cannot use `tasks_cli.py update` command to move work packages between Kanban lanes from worktree directories.
+
+**Workaround**: Manually edit the `lane:` field in work package frontmatter files.
+
+**Details**: See `docs/learning/spec-kitty.md` section "Kanban Lane Updates" for full context and workaround.
+
+**Date Reported**: 2025-12-29
+
+---
+
 ## Feature Requests
 
 ### 1. Kanban Board Drag-and-Drop Functionality
