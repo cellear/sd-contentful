@@ -33,5 +33,23 @@ legacy-reference/
 *.swo
 *~
 
-# Node modules (if any get added)
+# Node modules
 node_modules/
+
+# Next.js build artifacts
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

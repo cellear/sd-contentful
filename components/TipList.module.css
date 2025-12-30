@@ -1,0 +1,61 @@
+/* TipList Component Styles
+ * Grid layout matching original Simplify Drupal React app
+ * Based on structure from simplifydrupal.com/react-app/
+ */
+
+.tipList {
+  /* Container for the entire tip list */
+}
+
+.tipsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.tipCard {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  background: white;
+}
+
+.tipCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tipThumb {
+  width: 100%;
+  height: 250px; /* Fixed height to match 250x250 square crop */
+  display: block;
+  object-fit: cover; /* Ensures image fills the square, cropping if needed */
+}
+
+.tipCard h3 {
+  margin: 0.75rem 0.75rem 0.5rem 0.75rem;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+}
+
+.tipCard p {
+  margin: 0 0.75rem 0.5rem 0.75rem;
+  font-size: 0.95em;
+  color: #555;
+  flex-grow: 1;
+}
+
+.readMore {
+  margin: 0.5rem 0.75rem 0.75rem 0.75rem;
+  font-size: 0.85em;
+  color: #0070f3;
+  text-decoration: underline;
+}
+

@@ -1,0 +1,85 @@
+/* TipDetail Component Styles
+ * Extracted and adapted from legacy-reference/files/css_editor/sd_bs3.css
+ * 
+ * Original rules:
+ * - article img.img-responsive: padding: 20px; float: right;
+ * - article p: font-size: large; padding-top: 15px;
+ */
+
+.article {
+  /* Article container - matches <article> tag */
+}
+
+/* Article paragraph styling - extracted from legacy CSS */
+.paragraph {
+  font-size: large;
+  padding-top: 15px;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Article image styling - extracted from legacy CSS */
+.imageContainer {
+  margin-bottom: 1.5rem;
+}
+
+.image {
+  padding: 20px;
+  float: right;
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Responsive: disable float on mobile */
+@media (max-width: 768px) {
+  .image {
+    float: none;
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+  }
+}
+
+/* Rich text content styling */
+.heading1 {
+  font-size: 2.5em;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+}
+
+.heading2 {
+  font-size: 2em;
+  margin-bottom: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.heading3 {
+  font-size: 1.5em;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+.list {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.listItem {
+  margin-bottom: 0.5rem;
+}
+
+.link {
+  color: #0070f3;
+  text-decoration: underline;
+}
+
+.link:hover {
+  color: #0051cc;
+}
+
+/* Logo styling (if used) - extracted from legacy CSS */
+.logo img {
+  max-width: 100%;
+}
+
