@@ -380,9 +380,10 @@ When updating published entries:
 
 #### Transformation Parameters
 - `?w=250` - Resize to 250px width (maintains aspect ratio)
-- `?fit=fill` - Fill the dimensions (may crop to fit)
 - `?h=250` - Resize to 250px height
-- Multiple parameters: `?w=250&fit=fill&q=80` (width, fit mode, quality)
+- `?fit=fill` - Fill the dimensions (may crop to fit)
+- **Square thumbnails**: `?w=250&h=250&fit=fill` - Creates a 250x250 square crop (matches Drupal's image styles)
+- Multiple parameters: `?w=250&h=250&fit=fill&q=80` (width, height, fit mode, quality)
 
 #### Benefits
 - **No storage overhead**: Don't need to upload separate thumbnail versions
@@ -390,7 +391,13 @@ When updating published entries:
 - **CDN cached**: Transformed images are cached by Contentful's CDN
 - **Automatic**: Works with any image asset in Contentful
 
-**Key Insight**: Contentful's image transformation API eliminates the need for separate thumbnail storage (unlike Drupal's image styles which generate files). This simplifies content management while providing flexibility.
+#### Square Thumbnail Cropping (2025-12-30)
+- **Problem**: Original Drupal site uses 250x250 square thumbnails, but initial implementation maintained aspect ratio
+- **Solution**: Use `?w=250&h=250&fit=fill` to request square crops from Contentful CDN
+- **CSS Support**: Set `height: 250px` and `object-fit: cover` in CSS to ensure square display
+- **Result**: Thumbnails match original Drupal `tips_view_250px` image style exactly
+
+**Key Insight**: Contentful's image transformation API eliminates the need for separate thumbnail storage (unlike Drupal's image styles which generate files). This simplifies content management while providing flexibility. Square crops require both width and height parameters with `fit=fill`.
 
 ## Questions / Unresolved
 

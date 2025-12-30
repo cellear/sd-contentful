@@ -273,7 +273,13 @@ Error: Event handlers cannot be passed to Client Component props.
 </div>
 ```
 
-**Key Insight**: Understanding the original app structure (from HTML source) was crucial for implementing the correct layout. CSS Modules make it easy to scope styles per component, preventing conflicts with Next.js defaults.
+#### Square Thumbnail Implementation (2025-12-30)
+- **CSS for square thumbnails**: Set `height: 250px` (fixed) and `object-fit: cover` to ensure square display
+- **Image transformation**: Contentful URL parameters (`?w=250&h=250&fit=fill`) handle the cropping server-side
+- **Combined approach**: Contentful CDN crops the image, CSS ensures square container
+- **Result**: Perfect square thumbnails matching original Drupal site's image style
+
+**Key Insight**: Understanding the original app structure (from HTML source) was crucial for implementing the correct layout. CSS Modules make it easy to scope styles per component, preventing conflicts with Next.js defaults. For square thumbnails, combine Contentful image transformations with fixed-height CSS containers.
 
 ### Implementation Steps
 
