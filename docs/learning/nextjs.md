@@ -142,6 +142,59 @@ Running `npm run dev` starts a development server (like `php -S localhost:8000` 
 
 **Key insight**: Server components make data fetching simple - just call the async function and use the result. No state management, no loading states (unless you want them), no client-side fetching complexity.
 
+### WP04: User Story 2 - View Tip Detail (2025-12-29)
+
+**What I learned:**
+
+#### Dynamic Routes with Async Params
+
+In Next.js 16+, `params` in dynamic routes is a **Promise** and must be awaited:
+
+```typescript
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function TipDetailPage({ params }: PageProps) {
+  const { slug } = await params; // Must await!
+  const tip = await getTipBySlug(slug);
+  // ...
+}
+```
+
+**Why**: This allows Next.js to optimize route generation. Always await `params` before using it.
+
+#### Image Rendering in Server Components
+
+Images can be rendered directly in Server Components using standard `<img>` tags:
+
+```typescript
+{tip.imageUrl && (
+  <img
+    src={tip.imageUrl}
+    alt={tip.title}
+    style={{ maxWidth: "100%", height: "auto" }}
+  />
+)}
+```
+
+**Key points:**
+- No special Next.js Image component needed for basic use cases
+- Images from Contentful CDN are already optimized
+- Use standard HTML `<img>` with proper `alt` text for accessibility
+
+#### Rich Text Rendering
+
+Contentful's rich text is rendered using `@contentful/rich-text-react-renderer`:
+
+```typescript
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+
+{documentToReactComponents(tip.body, options)}
+```
+
+**Custom rendering options** allow you to style specific block types (headings, lists, paragraphs, etc.).
+
 ### WP03: User Story 1 - View Tips List (2025-12-29)
 
 **What I learned:**

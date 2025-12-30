@@ -31,13 +31,14 @@ Create a single content type: **Tip**
 - `slug` — Short text, required, unique (used for routing)
 - `tipNumber` — Integer, required (used for ordering)
 - `body` — Rich Text, required
+- `image` — Media (One file), optional but recommended (Simplify Drupal has always included images with tips)
 
 Content will be bulk-imported (prefer CSV import) from Drupal rather than entered manually.
 
 ## Front-End Behavior
 
 - `/` shows a list of all tips ordered by `tipNumber`
-- `/[slug]` shows the full tip (title + rich text body)
+- `/[slug]` shows the full tip (title + image if present + rich text body)
 - URLs must remain stable and slug-based
 
 ## Adapter Pattern Requirement

@@ -25,6 +25,25 @@
 
 ## Development
 
+### Setup
+
+1. **Install dependencies**:
+   ```bash
+   cd .worktrees/001-contentful-migration
+   npm install
+   ```
+
+2. **Configure environment variables**:
+   - Copy `.env.local.example` to `.env.local`
+   - Add your Contentful Space ID and Access Token
+
+3. **Run development server**:
+   ```bash
+   npm run dev
+   ```
+
+### Planning Documents
+
 See the planning documents in `docs/001-contentful-migration/` or `.worktrees/001-contentful-migration/kitty-specs/001-contentful-migration/` for:
 - Feature specification
 - Implementation plan

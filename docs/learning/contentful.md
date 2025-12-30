@@ -12,7 +12,7 @@ Contentful is a headless CMS (Content Management System) that provides:
 
 ## My Learning Journey
 
-**Work Packages**: WP01 (Project Setup - no Contentful work yet), WP02 (Adapter Layer - coming soon)
+**Work Packages**: WP01 (Project Setup), WP02 (Adapter Layer), WP03 (List View), WP04 (Detail View + Images)
 
 ### WP01: Project Setup (2025-12-29)
 
@@ -168,6 +168,76 @@ Our adapter transforms this to our `Tip` interface:
 - ✅ How to handle errors (API unavailable, rate limits)
 - ✅ How to use the adapter in real UI components (WP03)
 
+### WP04: Image Support (2025-12-30)
+
+**What I learned adding image support:**
+
+#### Image Field Structure
+
+Contentful stores images as **Asset** references. When you query entries with `include: 2`, linked assets are included in the response:
+
+```typescript
+{
+  image: {
+    sys: { id: "...", type: "Asset" },
+    fields: {
+      file: {
+        url: "//images.ctfassets.net/space/asset-id/filename.jpg"
+      }
+    }
+  }
+}
+```
+
+**Key points:**
+- Image URLs from Contentful start with `//` (protocol-relative)
+- Need to convert to `https://` for use in `<img>` tags
+- Assets can be fully included (with fields) or just linked (sys.id only)
+- If just linked, need to resolve from `response.includes.Asset` array
+
+#### Extracting Image URLs
+
+```typescript
+function extractImageUrl(image, includes) {
+  // If asset is fully included (has fields)
+  if (image.fields?.file?.url) {
+    const url = image.fields.file.url;
+    return url.startsWith('//') ? `https:${url}` : url;
+  }
+  
+  // If asset is just a link, resolve from includes
+  if (image.sys?.id && includes?.Asset) {
+    const asset = includes.Asset.find(a => a.sys.id === image.sys.id);
+    if (asset?.fields?.file?.url) {
+      const url = asset.fields.file.url;
+      return url.startsWith('//') ? `https:${url}` : url;
+    }
+  }
+  
+  return undefined;
+}
+```
+
+#### Querying with Assets
+
+```typescript
+const response = await client.getEntries({
+  content_type: "tip",
+  include: 2, // Include linked assets (images) in response
+});
+```
+
+**Important**: Without `include: 2`, image assets won't be included in the response, even if the entry has an image field set.
+
+#### Publishing Requirements
+
+- Image field must be added to content type (and content type saved)
+- Image must be uploaded to Contentful Media library
+- Image must be linked to the entry's image field
+- **Entry must be PUBLISHED** (not just saved) for image to appear in API response
+
+**Gotcha**: If you add an image to an entry but don't republish it, the image won't appear in the Delivery API response, even though it shows in the Contentful UI.
+
 ### Rich Text Rendering
 
 **What I'll learn:**
@@ -184,18 +254,109 @@ Our adapter transforms this to our `Tip` interface:
 - [x] Get API credentials (Space ID, Access Token) (WP02)
 - [x] Test API access (WP02 - adapter working!)
 
-## Migration Steps (To Do)
+## Migration Steps
 
-- [ ] Export tips from Drupal (CSV format)
-- [ ] Map Drupal fields to Contentful fields
-- [ ] Import into Contentful (CSV import tool)
-- [ ] Verify all 31 tips imported correctly
+- [x] Export tips from Drupal (CSV format) - Completed 2025-12-30
+- [x] Map Drupal fields to Contentful fields - Completed 2025-12-30
+- [x] Import into Contentful - **Custom script created** (Contentful has no built-in CSV import)
+- [x] Verify all 31 tips imported correctly - All 31 tips + 26 images successfully imported
+
+### WP05: Content Import from Drupal (2025-12-30)
+
+**What I learned importing 31 tips:**
+
+#### CSV Import Not Available in Web UI
+- **Key Finding**: Contentful's web UI does **not** have a built-in CSV import feature
+- We had to write our own import script using the Management API
+- This is a common need, but Contentful expects you to use their API or third-party tools
+
+#### Management API vs Delivery API
+- **Management API token** (`CFPAT-...`) - Used for creating/editing content via API
+- **Delivery API token** - Used for reading published content (what Next.js uses)
+- These are completely different tokens with different permissions
+- Management API token is found in Settings → API keys → "Content Management API - access token"
+
+#### Asset Upload Process
+```javascript
+// 1. Create asset from file buffer
+const asset = await environment.createAssetFromFiles({
+  fields: {
+    title: { 'en-US': fileName },
+    file: {
+      'en-US': {
+        contentType: 'image/png',
+        fileName: fileName,
+        file: fileBuffer
+      }
+    }
+  }
+});
+
+// 2. Process asset (required before publishing)
+await asset.processForAllLocales();
+
+// 3. Wait for processing to complete
+// (check asset.fields.file exists)
+
+// 4. Publish asset
+await asset.publish();
+```
+
+**Key points:**
+- `createAssetFromFiles` handles the upload automatically (no separate upload step needed)
+- Assets must be processed before publishing
+- Processing can take a few seconds - need to poll/wait
+- Check for existing assets by filename to avoid duplicates
+
+#### Entry Update Workflow
+When updating published entries:
+1. Fetch latest version of entry
+2. Unpublish if published (required to update)
+3. Fetch again after unpublishing (version changes)
+4. Update fields
+5. Save entry
+6. Fetch again after update (version changes)
+7. Publish if it was published before
+
+**Why**: Contentful uses optimistic locking with version numbers. Each update increments the version, so you must fetch the latest version before each operation to avoid 409 conflicts.
+
+#### Rich Text Conversion
+- Contentful stores rich text as structured JSON documents (not HTML)
+- We converted plain text to Rich Text Document format:
+  ```javascript
+  {
+    nodeType: 'document',
+    data: {},
+    content: [
+      {
+        nodeType: 'paragraph',
+        data: {},
+        content: [
+          {
+            nodeType: 'text',
+            value: 'Text content',
+            marks: [],
+            data: {}
+          }
+        ]
+      }
+    ]
+  }
+  ```
+- For HTML content, would need a library like `@contentful/rich-text-html-renderer` in reverse, or manual parsing
+
+#### Import Script Architecture
+- Created `import-to-contentful.js` using `contentful-management` SDK
+- Reads CSV, uploads images, creates entries, converts body text
+- Handles errors gracefully (skips existing entries, logs failures)
+- Rate limiting: Added 500ms delay between operations to avoid API limits
+
+**Key Insight**: Contentful's API is powerful but requires careful version management. The Management API is essential for bulk operations that aren't available in the web UI.
 
 ## Questions / Unresolved
 
-- How does CSV import work in Contentful?
-- What's the rate limit on free tier?
-- How do I handle rich text conversion from Drupal to Contentful format?
+- What's the rate limit on free tier? (We didn't hit it with 31 tips + images)
+- How to convert HTML from Drupal to Contentful Rich Text format automatically? (We used plain text conversion for now)
 
 ## Resources
 

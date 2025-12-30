@@ -1,0 +1,27 @@
+{
+  "name": "sd-contentful",
+  "version": "1.0.0",
+  "description": "**SD-CONTENTFUL** - Modernizing Simplify Drupal by migrating from Drupal+React to Contentful+Next.js with a decoupled architecture, in order to explore and prototype non-Drupal architectures.",
+  "main": "import-to-contentful.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cellear/sd-contentful.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cellear/sd-contentful/issues"
+  },
+  "homepage": "https://github.com/cellear/sd-contentful#readme",
+  "dependencies": {
+    "contentful-management": "^11.66.0",
+    "csv-parser": "^3.2.0"
+  }
+}
