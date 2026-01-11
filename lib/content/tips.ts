@@ -3,6 +3,9 @@ import { Document } from "@contentful/rich-text-types";
 import { contentfulClient } from "./contentful";
 import { Tip } from "@/lib/types/tip";
 
+// Build version for cache busting verification
+const BUILD_VERSION = "2.1";
+
 /**
  * Contentful entry structure for Tip content type.
  * This matches what Contentful returns from the API.
@@ -172,8 +175,8 @@ export async function getAllTips(): Promise<Tip[]> {
     console.error('Full Error:', error);
     console.error('===========================');
     
-    // Throw detailed error message
-    const detailedError = `Failed to fetch tips from Contentful API. ` +
+    // Throw detailed error message with build version
+    const detailedError = `[Build v${BUILD_VERSION}] Failed to fetch tips from Contentful API. ` +
       `Error: ${errorType} (${statusCode}). ` +
       `Message: ${errorMessage}. ` +
       `Please check: 1) CONTENTFUL_SPACE_ID is set correctly, ` +
@@ -248,8 +251,8 @@ export async function getTipBySlug(slug: string): Promise<Tip | null> {
     console.error('Full Error:', error);
     console.error('==========================================');
     
-    // Throw detailed error message
-    const detailedError = `Failed to fetch tip "${slug}" from Contentful API. ` +
+    // Throw detailed error message with build version
+    const detailedError = `[Build v${BUILD_VERSION}] Failed to fetch tip "${slug}" from Contentful API. ` +
       `Error: ${errorType} (${statusCode}). ` +
       `Message: ${errorMessage}. ` +
       `Please check: 1) CONTENTFUL_SPACE_ID is set correctly, ` +

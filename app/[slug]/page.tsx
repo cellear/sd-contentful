@@ -3,6 +3,10 @@ import { getTipBySlug } from "@/lib/content/tips";
 import TipDetail from "@/components/TipDetail";
 import ErrorMessage from "@/components/ErrorMessage";
 
+// Force dynamic rendering and disable all caching
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface PageProps {
   params: Promise<{
     slug: string;
