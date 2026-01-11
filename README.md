@@ -1,6 +1,8 @@
 # Simplify Drupal → Contentful Demo
 
-**SD-CONTENTFUL** - A technology demonstration exploring Contentful+Next.js as an alternative to Drupal. This is a **demo/experiment**, not intended to replace the current Simplify Drupal site.
+**SD-CONTENTFUL** - A technology demonstration exploring migration paths from traditional Drupal architecture to modern headless CMS (Contentful + Next.js). This project demonstrates Python-based content transformation, API design considerations, and CMS evolution patterns.
+
+Part of broader research into CMS migration tooling and AI-assisted platform transitions.
 
 ## Project Status
 
@@ -18,7 +20,25 @@ This project uses [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) for sp
 
 ## Overview
 
-**Simplify Drupal** is a content site that provides tips and guidance. This demo explores a Contentful+Next.js architecture as a technology experiment. The architecture uses an adapter pattern to keep the UI decoupled from the CMS, enabling future backend changes without frontend rewrites.
+This project explores the technical challenges and architectural decisions involved in migrating from traditional monolithic CMS (Drupal) to modern headless architectures. Key focus areas:
+
+**Migration Strategy:**
+- Python-based content transformation and data mapping
+- CSV-based intermediate format for content portability
+- Automated import scripts for bulk content migration
+- Preservation of content relationships and metadata
+
+**Technical Approach:**
+- Adapter pattern to decouple UI from CMS backend
+- API-first design enabling future backend flexibility
+- TypeScript strict mode for type safety across migration boundaries
+- Server-side rendering (SSR) for performance and SEO
+
+**Real-World Constraints:**
+- Managing content transformation across different data models
+- Maintaining SEO and URL structure during migration
+- Balancing modern architecture with practical migration paths
+- Multi-platform deployment (Vercel, Pantheon) for hosting flexibility
 
 ## Architecture
 
