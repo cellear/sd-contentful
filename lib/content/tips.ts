@@ -114,7 +114,7 @@ function transformEntryToTip(entry: Entry<any>, includes?: any): Tip | null {
  * Retrieves all tips ordered by tipNumber in ascending order.
  * 
  * @returns Promise resolving to array of Tip objects
- * @throws Error with simple message if Contentful API unavailable
+ * @throws Error with detailed diagnostic information if Contentful API unavailable
  */
 export async function getAllTips(): Promise<Tip[]> {
   try {
@@ -133,12 +133,55 @@ export async function getAllTips(): Promise<Tip[]> {
 
     return tips;
   } catch (error) {
-    // Log actual error for debugging (in development only)
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Contentful API error:', error);
+    // Enhanced error diagnostics for better debugging
+    const timestamp = new Date().toISOString();
+    const env = process.env.NODE_ENV || 'unknown';
+    
+    // Extract error details
+    let errorMessage = 'Unknown error';
+    let statusCode = 'N/A';
+    let errorType = 'Unknown';
+    
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      
+      // Check for common error patterns
+      if (errorMessage.includes('401') || errorMessage.includes('Unauthorized')) {
+        errorType = 'Authentication Failed';
+        statusCode = '401';
+      } else if (errorMessage.includes('404') || errorMessage.includes('Not Found')) {
+        errorType = 'Space/Content Not Found';
+        statusCode = '404';
+      } else if (errorMessage.includes('403') || errorMessage.includes('Forbidden')) {
+        errorType = 'Access Forbidden';
+        statusCode = '403';
+      } else if (errorMessage.includes('ENOTFOUND') || errorMessage.includes('ECONNREFUSED') || errorMessage.includes('network')) {
+        errorType = 'Network Error';
+      } else if (errorMessage.includes('timeout')) {
+        errorType = 'Timeout Error';
+      }
     }
-    // Simple error handling per constitution
-    throw new Error("Contentful is down!");
+    
+    // Log detailed error information
+    console.error('=== Contentful API Error ===');
+    console.error('Timestamp:', timestamp);
+    console.error('Environment:', env);
+    console.error('Error Type:', errorType);
+    console.error('Status Code:', statusCode);
+    console.error('Error Message:', errorMessage);
+    console.error('Full Error:', error);
+    console.error('===========================');
+    
+    // Throw detailed error message
+    const detailedError = `Failed to fetch tips from Contentful API. ` +
+      `Error: ${errorType} (${statusCode}). ` +
+      `Message: ${errorMessage}. ` +
+      `Please check: 1) CONTENTFUL_SPACE_ID is set correctly, ` +
+      `2) CONTENTFUL_ACCESS_TOKEN is valid and has proper permissions, ` +
+      `3) Network connectivity to Contentful servers. ` +
+      `Timestamp: ${timestamp}, Environment: ${env}`;
+    
+    throw new Error(detailedError);
   }
 }
 
@@ -147,7 +190,7 @@ export async function getAllTips(): Promise<Tip[]> {
  * 
  * @param slug - The URL-safe slug identifier (e.g., "03-site-builder")
  * @returns Promise resolving to Tip object or null if not found
- * @throws Error with simple message if Contentful API unavailable
+ * @throws Error with detailed diagnostic information if Contentful API unavailable
  */
 export async function getTipBySlug(slug: string): Promise<Tip | null> {
   try {
@@ -165,8 +208,56 @@ export async function getTipBySlug(slug: string): Promise<Tip | null> {
     // Transform entry to Tip, return null if invalid
     return transformEntryToTip(response.items[0], response.includes);
   } catch (error) {
-    // Simple error handling per constitution
-    throw new Error("Contentful is down!");
+    // Enhanced error diagnostics for better debugging
+    const timestamp = new Date().toISOString();
+    const env = process.env.NODE_ENV || 'unknown';
+    
+    // Extract error details
+    let errorMessage = 'Unknown error';
+    let statusCode = 'N/A';
+    let errorType = 'Unknown';
+    
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      
+      // Check for common error patterns
+      if (errorMessage.includes('401') || errorMessage.includes('Unauthorized')) {
+        errorType = 'Authentication Failed';
+        statusCode = '401';
+      } else if (errorMessage.includes('404') || errorMessage.includes('Not Found')) {
+        errorType = 'Space/Content Not Found';
+        statusCode = '404';
+      } else if (errorMessage.includes('403') || errorMessage.includes('Forbidden')) {
+        errorType = 'Access Forbidden';
+        statusCode = '403';
+      } else if (errorMessage.includes('ENOTFOUND') || errorMessage.includes('ECONNREFUSED') || errorMessage.includes('network')) {
+        errorType = 'Network Error';
+      } else if (errorMessage.includes('timeout')) {
+        errorType = 'Timeout Error';
+      }
+    }
+    
+    // Log detailed error information
+    console.error('=== Contentful API Error (getTipBySlug) ===');
+    console.error('Timestamp:', timestamp);
+    console.error('Environment:', env);
+    console.error('Slug:', slug);
+    console.error('Error Type:', errorType);
+    console.error('Status Code:', statusCode);
+    console.error('Error Message:', errorMessage);
+    console.error('Full Error:', error);
+    console.error('==========================================');
+    
+    // Throw detailed error message
+    const detailedError = `Failed to fetch tip "${slug}" from Contentful API. ` +
+      `Error: ${errorType} (${statusCode}). ` +
+      `Message: ${errorMessage}. ` +
+      `Please check: 1) CONTENTFUL_SPACE_ID is set correctly, ` +
+      `2) CONTENTFUL_ACCESS_TOKEN is valid and has proper permissions, ` +
+      `3) Network connectivity to Contentful servers. ` +
+      `Timestamp: ${timestamp}, Environment: ${env}`;
+    
+    throw new Error(detailedError);
   }
 }
 

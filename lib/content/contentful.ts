@@ -19,20 +19,47 @@ function getContentfulClient(): ContentfulClientApi<any> {
   const spaceId = process.env.CONTENTFUL_SPACE_ID;
   const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
 
-  if (!spaceId || !accessToken) {
+  // Enhanced diagnostics for missing environment variables
+  const missingVars: string[] = [];
+  if (!spaceId) missingVars.push('CONTENTFUL_SPACE_ID');
+  if (!accessToken) missingVars.push('CONTENTFUL_ACCESS_TOKEN');
+
+  if (missingVars.length > 0) {
+    const timestamp = new Date().toISOString();
+    const env = process.env.NODE_ENV || 'unknown';
+    const platform = process.env.VERCEL ? 'Vercel' : 
+                     process.env.PANTHEON_ENVIRONMENT ? 'Pantheon' : 
+                     'Unknown';
+    
+    // Log detailed diagnostic information
+    console.error('=== Missing Contentful Environment Variables ===');
+    console.error('Timestamp:', timestamp);
+    console.error('Environment:', env);
+    console.error('Platform:', platform);
+    console.error('Missing Variables:', missingVars.join(', '));
+    console.error('CONTENTFUL_SPACE_ID present:', !!spaceId);
+    console.error('CONTENTFUL_ACCESS_TOKEN present:', !!accessToken);
+    console.error('===============================================');
+    
     throw new Error(
-      "CONTENTFUL_SPACE_ID and CONTENTFUL_ACCESS_TOKEN environment variables are required. " +
-      "Please set them in your .env.local file or Vercel environment variables."
+      `Missing required Contentful environment variables: ${missingVars.join(', ')}. ` +
+      `Please set them in your deployment platform's environment configuration. ` +
+      `For local development, use .env.local file. ` +
+      `For Vercel: Set in Project Settings > Environment Variables. ` +
+      `For Pantheon: Set in Site Dashboard > Environment Variables. ` +
+      `Platform detected: ${platform}, Environment: ${env}, Timestamp: ${timestamp}`
     );
   }
 
-  // Debug: Log that we have credentials (but not the actual values)
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Contentful client config:', {
-      spaceId: spaceId ? `${spaceId.substring(0, 4)}...` : 'missing',
-      accessToken: accessToken ? `${accessToken.substring(0, 4)}...` : 'missing',
-    });
-  }
+  // Log successful configuration (but not the actual values)
+  console.log('Contentful client initialized:', {
+    spaceId: spaceId ? `${spaceId.substring(0, 4)}...` : 'missing',
+    accessToken: accessToken ? `${accessToken.substring(0, 4)}...` : 'missing',
+    platform: process.env.VERCEL ? 'Vercel' : 
+              process.env.PANTHEON_ENVIRONMENT ? 'Pantheon' : 
+              'Unknown',
+    environment: process.env.NODE_ENV || 'unknown',
+  });
 
   _contentfulClient = createClient({
     space: spaceId,
