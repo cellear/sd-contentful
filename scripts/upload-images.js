@@ -23,7 +23,7 @@ if (!managementToken) {
   process.exit(1);
 }
 
-const CSV_FILE = path.join(__dirname, 'contentful-import.csv');
+const CSV_FILE = path.join(__dirname, 'data', 'contentful-import.csv');
 const client = contentfulManagement.createClient({
   accessToken: managementToken,
 });

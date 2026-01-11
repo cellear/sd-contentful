@@ -27,6 +27,9 @@ legacy-reference/
 # Spec Kitty dashboard data
 .kittify/.dashboard/
 
+# Spec Kitty worktrees (temporary development artifacts)
+.worktrees/
+
 # OS files
 .DS_Store
 *.swp

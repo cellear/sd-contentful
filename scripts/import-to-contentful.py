@@ -45,7 +45,7 @@ if not management_token:
     print('  CONTENTFUL_MANAGEMENT_TOKEN=your-token python3 import-to-contentful.py')
     sys.exit(1)
 
-CSV_FILE = Path(__file__).parent / 'contentful-import.csv'
+CSV_FILE = Path(__file__).parent / 'data' / 'contentful-import.csv'
 client = Client(management_token)
 
 def text_to_rich_text(text):

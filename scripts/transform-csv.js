@@ -14,9 +14,9 @@ const csv = require('csv-parser');
 const { createWriteStream } = require('fs');
 
 // Configuration
-const INPUT_CSV = path.join(__dirname, 'export.csv');
-const OUTPUT_CSV = path.join(__dirname, 'contentful-import.csv');
-const IMAGE_BASE_PATH = path.join(__dirname, 'legacy-reference/files/2024-01');
+const INPUT_CSV = path.join(__dirname, 'data', 'export.csv');
+const OUTPUT_CSV = path.join(__dirname, 'data', 'contentful-import.csv');
+const IMAGE_BASE_PATH = path.join(__dirname, '..', 'legacy-reference', 'files', '2024-01');
 
 /**
  * Convert title to URL-safe slug
@@ -41,7 +41,7 @@ function extractImageFilename(drupalPath) {
   // Check if file exists in the image directory
   const fullPath = path.join(IMAGE_BASE_PATH, filename);
   if (fs.existsSync(fullPath)) {
-    return `legacy-reference/files/2024-01/${filename}`;
+    return path.join('..', 'legacy-reference', 'files', '2024-01', filename);
   }
   
   // Try alternative extensions
@@ -50,7 +50,7 @@ function extractImageFilename(drupalPath) {
   for (const ext of extensions) {
     const altPath = path.join(IMAGE_BASE_PATH, baseName + ext);
     if (fs.existsSync(altPath)) {
-      return `legacy-reference/files/2024-01/${baseName}${ext}`;
+      return path.join('..', 'legacy-reference', 'files', '2024-01', `${baseName}${ext}`);
     }
   }
   

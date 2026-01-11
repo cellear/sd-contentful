@@ -29,7 +29,6 @@ We've created a script that automatically imports your CSV and uploads images.
 
 **For Node.js (JavaScript version):**
 ```bash
-cd .worktrees/001-contentful-migration
 npm install contentful-management csv-parser
 ```
 
@@ -42,19 +41,17 @@ pip install contentful-management
 
 **JavaScript version:**
 ```bash
-cd /Users/lukemccormick/Sites/Simplify-Drupal/SD-CONTENTFUL
-CONTENTFUL_MANAGEMENT_TOKEN=your-token-here node import-to-contentful.js
+CONTENTFUL_MANAGEMENT_TOKEN=your-token-here node scripts/import-to-contentful.js
 ```
 
 **Python version:**
 ```bash
-cd /Users/lukemccormick/Sites/Simplify-Drupal/SD-CONTENTFUL
-CONTENTFUL_MANAGEMENT_TOKEN=your-token-here python3 import-to-contentful.py
+CONTENTFUL_MANAGEMENT_TOKEN=your-token-here python3 scripts/import-to-contentful.py
 ```
 
 ### What the Script Does
 
-1. ✅ Reads `contentful-import.csv`
+1. ✅ Reads `scripts/data/contentful-import.csv`
 2. ✅ Uploads all 31 images to Contentful Media library
 3. ✅ Creates Tip entries with title, slug, tipNumber, body
 4. ✅ Converts plain text body to Rich Text format
@@ -97,7 +94,7 @@ contentful login
 
 ### Import CSV
 ```bash
-cfimp -input:contentful-import.csv -model:tip -space:r4mpogvp9tf2
+cfimp -input:scripts/data/contentful-import.csv -model:tip -space:r4mpogvp9tf2
 ```
 
 **Note**: cfimp may require additional configuration for image uploads and Rich Text conversion.

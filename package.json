@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "**SD-CONTENTFUL** - Modernizing Simplify Drupal by migrating from Drupal+React to Contentful+Next.js with a decoupled architecture, in order to explore and prototype non-Drupal architectures.",
-  "main": "import-to-contentful.js",
+  "main": "scripts/import-to-contentful.js",
   "directories": {
     "doc": "docs"
   },

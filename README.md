@@ -30,7 +30,9 @@ This project uses [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) for sp
 ## Project Structure
 
 - `.worktrees/` - Feature worktrees (Spec Kitty workflow)
-- `docs/` - Planning documents (copies for easy access)
+- `docs/` - Documentation, guides, and planning documents
+- `scripts/` - Utility scripts for data migration and content import
+- `scripts/data/` - CSV data files for content import
 - `.kittify/` - Spec Kitty configuration and constitution
 
 ## Development

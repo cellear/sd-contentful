@@ -16,9 +16,9 @@ from urllib.parse import unquote
 from html import unescape
 
 # Configuration
-INPUT_CSV = Path(__file__).parent / 'export.csv'
-OUTPUT_CSV = Path(__file__).parent / 'contentful-import.csv'
-HTML_FILE = Path(__file__).parent / 'sd.html'
+INPUT_CSV = Path(__file__).parent / 'data' / 'export.csv'
+OUTPUT_CSV = Path(__file__).parent / 'data' / 'contentful-import.csv'
+HTML_FILE = Path(__file__).parent.parent / 'legacy-reference' / 'sd.html'
 IMAGE_BASE_PATHS = [
     Path(__file__).parent / 'legacy-reference/files/2024-01',
     Path(__file__).parent / 'legacy-reference/files/2024-02',

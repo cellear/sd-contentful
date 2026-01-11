@@ -11,15 +11,13 @@
 ## Install Dependencies
 
 ```bash
-cd .worktrees/001-contentful-migration
 npm install contentful-management csv-parser
 ```
 
 ## Run the Import
 
 ```bash
-cd /Users/lukemccormick/Sites/Simplify-Drupal/SD-CONTENTFUL
-CONTENTFUL_MANAGEMENT_TOKEN=your-token-here node import-to-contentful.js
+CONTENTFUL_MANAGEMENT_TOKEN=your-token-here node scripts/import-to-contentful.js
 ```
 
 Replace `your-token-here` with the token you copied in step 1.
@@ -27,7 +25,7 @@ Replace `your-token-here` with the token you copied in step 1.
 ## What Happens
 
 The script will:
-- ✅ Read all 31 tips from `contentful-import.csv`
+- ✅ Read all 31 tips from `scripts/data/contentful-import.csv`
 - ✅ Upload all images to Contentful
 - ✅ Create Tip entries with all fields
 - ✅ Convert body text to Rich Text format
@@ -40,7 +38,6 @@ The script will:
 
 **"contentful-management not found"**
 ```bash
-cd .worktrees/001-contentful-migration
 npm install contentful-management csv-parser
 ```
 
