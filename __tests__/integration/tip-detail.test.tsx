@@ -184,12 +184,12 @@ describe("Tip Detail Page Integration Tests", () => {
   });
 
   it("displays error message when adapter throws", async () => {
-    mockGetTipBySlug.mockRejectedValue(new Error("Contentful is down!"));
+    mockGetTipBySlug.mockRejectedValue(new Error("Failed to fetch tip from Contentful API"));
 
     const component = await TipDetailPage({ params: Promise.resolve({ slug: "test-tip" }) });
     render(component);
 
-    expect(screen.getByText(/Error: Contentful is down!/)).toBeInTheDocument();
+    expect(screen.getByText(/Error: Failed to fetch tip from Contentful API/)).toBeInTheDocument();
   });
 
   it("handles various slug formats", async () => {

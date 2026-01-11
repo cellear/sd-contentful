@@ -88,12 +88,12 @@ describe("Home Page Integration Tests", () => {
   });
 
   it("displays error message when adapter throws", async () => {
-    mockGetAllTips.mockRejectedValue(new Error("Contentful is down!"));
+    mockGetAllTips.mockRejectedValue(new Error("Failed to fetch tips from Contentful API"));
 
     const component = await Home();
     render(component);
 
-    expect(screen.getByText(/Error: Contentful is down!/)).toBeInTheDocument();
+    expect(screen.getByText(/Error: Failed to fetch tips from Contentful API/)).toBeInTheDocument();
   });
 
   it("makes tips clickable with correct navigation links", async () => {

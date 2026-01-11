@@ -205,10 +205,10 @@ describe("getAllTips", () => {
     expect(tips[0].imageUrl).toBeUndefined();
   });
 
-  it("should throw simple error message when Contentful is unavailable", async () => {
+  it("should throw detailed error message when Contentful is unavailable", async () => {
     mockClient.getEntries.mockRejectedValue(new Error("Network error"));
 
-    await expect(getAllTips()).rejects.toThrow("Contentful is down!");
+    await expect(getAllTips()).rejects.toThrow("Failed to fetch tips from Contentful API");
   });
 });
 
@@ -278,10 +278,10 @@ describe("getTipBySlug", () => {
     expect(tip).toBeNull();
   });
 
-  it("should throw simple error message when Contentful is unavailable", async () => {
+  it("should throw detailed error message when Contentful is unavailable", async () => {
     mockClient.getEntries.mockRejectedValue(new Error("Network error"));
 
-    await expect(getTipBySlug("test")).rejects.toThrow("Contentful is down!");
+    await expect(getTipBySlug("test")).rejects.toThrow("Failed to fetch tip");
   });
 });
 
