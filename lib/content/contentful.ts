@@ -61,9 +61,10 @@ function getContentfulClient(): ContentfulClientApi<any> {
     environment: process.env.NODE_ENV || 'unknown',
   });
 
+  // TypeScript doesn't know we've already checked these above, so we use non-null assertions
   _contentfulClient = createClient({
-    space: spaceId,
-    accessToken: accessToken,
+    space: spaceId!,
+    accessToken: accessToken!,
   });
 
   return _contentfulClient;
