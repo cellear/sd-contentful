@@ -6,7 +6,9 @@
 
 ✅ **MVP Complete** - Demo is functionally complete and deployed! All 31 tips are accessible with images, styling, and full functionality.
 
-**Live Demo**: https://sd-contentful.vercel.app/
+**Live Demos**:
+- **Vercel**: https://sd-contentful.vercel.app/
+- **Pantheon**: https://dev-sd-contentful.pantheonsite.io/
 
 **Original Sites**:
 - **Original Drupal site**: https://simplifydrupal.com/ (monolithic Drupal version)
@@ -52,11 +54,22 @@ This project uses [Spec Kitty](https://github.com/Priivacy-ai/spec-kitty) for sp
 
 ### Deployment
 
-The app is deployed to Vercel and automatically updates on push to the main branch. See `.worktrees/004-description-deploy-next/kitty-specs/004-description-deploy-next/quickstart.md` for deployment details.
+The app is deployed to two platforms:
+
+#### Vercel Deployment
+- **Live**: https://sd-contentful.vercel.app/
+- Automatically deploys on push to main branch
+- See `.worktrees/004-description-deploy-next/kitty-specs/004-description-deploy-next/quickstart.md` for details
+
+#### Pantheon Deployment
+- **Live**: https://dev-sd-contentful.pantheonsite.io/
+- Deployed to Pantheon's Next.js hosting platform
+- **See [docs/PANTHEON_DEPLOYMENT.md](docs/PANTHEON_DEPLOYMENT.md)** for full setup guide
+- Includes health check endpoint at `/api/health`
 
 **Custom Domain** (optional):
-- Vercel's free tier supports custom domains if you want to use `contentful.simplifydrupal.com` instead
-- Current domain `sd-contentful.vercel.app` is already clean and readable
+- Both platforms support custom domains
+- Current domains are clean and readable
 
 ### Planning Documents
 
